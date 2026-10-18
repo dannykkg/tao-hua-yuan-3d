@@ -5,3 +5,10 @@ shots/
 scripts_*.mjs
 .tools/
 .DS_Store
+
+# Local video-production workspace (final clips are published as a GitHub Release)
+video-work/
+.video-test/
+videos/
+.cache/
+video/*.mp4

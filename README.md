@@ -4,11 +4,18 @@
 
 **在线体验：** https://dannykkg.github.io/tao-hua-yuan-3d/  
 **仓库：** https://github.com/dannykkg/tao-hua-yuan-3d  
+**漫游演示：** [观看 92 秒视频](https://github.com/dannykkg/tao-hua-yuan-3d/releases/tag/m1)  
 **M1 验收：** [M1_ACCEPTANCE.md](M1_ACCEPTANCE.md)
 
 从武陵溪出发，沿溪穿过桃花林，进入山腹石隙；再走出洞口，看到良田、美池、桑竹、屋舍与往来种作的村人。你可以自由行走，也可以交由自动导览，依次经过原文的十二折。场景中的建筑、农事、器物与服饰参考汉晋之间的物质文化作了合理想象；这些补充以及相关争论，都收在「史注」里。
 
 ![桃花林 · M1 写实化](preview/peach.png)
+
+## 漫游演示
+
+[![桃花源記 · 漫游演示](preview/video-poster.jpg)](https://github.com/dannykkg/tao-hua-yuan-3d/releases/tag/m1)
+
+约 92 秒，按原文次序剪成八段：溪口、桃花林、山口、洞中、洞口、村落、宴席、美池。中文标题与字幕，配环境声；画面取自实际场景漫游。
 
 ## 运行
 
