@@ -1,0 +1,7 @@
+node_modules/
+.npm-cache/
+dist/
+shots/
+scripts_*.mjs
+.tools/
+.DS_Store

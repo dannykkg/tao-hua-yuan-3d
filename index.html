@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1c211c" />
+  <meta name="description" content="以《桃花源记》为线索的可漫游三维场景。缘溪行，逢桃花林，穿山口，入桃源。" />
+  <title>桃花源記 · 可漫游的世外桃源</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%238c2f26'/%3E%3Ctext x='32' y='44' font-size='36' text-anchor='middle' fill='%23f3e8d2' font-family='serif'%3E源%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <main id="stage">
+    <canvas id="view" aria-label="桃花源三维场景"></canvas>
+    <div class="screen-tint"></div>
+    <div class="screen-grain"></div>
+  </main>
+
+  <div id="loading" class="loading">
+    <div class="loading-mark">源</div>
+    <p class="loading-text">正在缘溪寻源</p>
+    <div class="loading-track"><i></i></div>
+    <p class="loading-sub">叠山 · 理水 · 种桃 · 结庐</p>
+  </div>
+
+  <section id="intro" class="intro hidden">
+    <div class="intro-wash"></div>
+    <div class="intro-grid">
+      <div class="intro-title-wrap">
+        <p class="era">東晉 · 陶淵明</p>
+        <h1 class="vertical-title" aria-label="桃花源記">
+          <span>桃</span><span>花</span><span>源</span><span>記</span>
+        </h1>
+        <div class="title-seal">桃源</div>
+        <p class="title-caption">A HIDDEN REALM<br />BEYOND THE PEACH BLOSSOMS</p>
+      </div>
+
+      <div class="intro-copy">
+        <p class="opening">晋太元中，武陵人捕鱼为业。<br />缘溪行，忘路之远近。</p>
+        <p class="premise">一溪，一山，一洞。<br />穿过落英与岩隙，去看一个被时间遗忘的村落。</p>
+        <div class="intro-actions">
+          <button id="btn-walk" class="ink-btn primary">
+            <b>循溪而行</b>
+            <span>自由漫游 · WASD + 鼠标</span>
+          </button>
+          <button id="btn-tour" class="ink-btn">
+            <b>随波入源</b>
+            <span>自动导览 · 约三分钟</span>
+          </button>
+        </div>
+        <p class="intro-tip">
+          按 <kbd>M</kbd> 展开游记与史注 &nbsp;·&nbsp; 按 <kbd>E</kbd> 察看近处细节 &nbsp;·&nbsp; 建议开启声音
+        </p>
+      </div>
+    </div>
+    <div class="intro-footer">
+      <span>据《桃花源记》文本想象复原</span>
+      <span class="footer-dot">◆</span>
+      <span>东晋太元年间 · 武陵</span>
+    </div>
+  </section>
+
+  <div id="hud" class="hud is-hidden">
+    <header class="hud-top">
+      <div class="brand">
+        <span class="brand-seal">源</span>
+        <div class="brand-text">
+          <b>桃花源記</b>
+          <small>TAO HUA YUAN JI</small>
+        </div>
+      </div>
+      <nav class="hud-nav">
+        <button id="btn-journal" class="nav-btn" title="展开游记（M）">
+          <span>游记</span><kbd>M</kbd>
+        </button>
+        <button id="btn-mode" class="nav-btn" title="切换自动导览">
+          <span>自动</span>
+        </button>
+        <button id="btn-audio" class="nav-btn icon-btn" title="声音">
+          <span class="audio-glyph">声</span>
+        </button>
+        <button id="btn-fullscreen" class="nav-btn icon-btn" title="全屏">
+          <span class="full-glyph">⛶</span>
+        </button>
+        <button id="btn-help" class="nav-btn icon-btn" title="操作说明">?</button>
+      </nav>
+    </header>
+
+    <div id="place-tag" class="place-tag">
+      <span class="place-index">壹</span>
+      <span class="place-name">武陵溪</span>
+    </div>
+
+    <div id="objective" class="objective">
+      <span class="obj-label">缘溪行</span>
+      <span class="obj-rule"></span>
+      <span class="obj-dist">桃花林 · 在前</span>
+    </div>
+
+    <div id="crosshair" class="crosshair"></div>
+
+    <div id="interact-prompt" class="interact-prompt">
+      <kbd>E</kbd><span id="interact-label">察看</span>
+    </div>
+
+    <div id="quote-card" class="quote-card">
+      <div class="quote-rule"></div>
+      <p class="quote-text">晋太元中，武陵人捕鱼为业。缘溪行，忘路之远近。</p>
+      <p class="quote-source">《桃花源记》· 陶渊明</p>
+    </div>
+
+    <div class="hud-bottom">
+      <div class="movement-hint">
+        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 行走</span>
+        <span><kbd>⇧</kbd> 疾行</span>
+        <span><kbd>M</kbd> 游记</span>
+        <span><kbd>E</kbd> 察看</span>
+        <span><kbd>Esc</kbd> 停步</span>
+      </div>
+      <div class="mode-status"><i></i><span id="mode-label">漫游</span></div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <aside id="chapter-card" class="chapter-card">
+    <button id="chapter-close" class="close-btn" aria-label="收起">×</button>
+    <div class="chapter-head">
+      <span id="chapter-no" class="chapter-no">一</span>
+      <div>
+        <p id="chapter-kicker" class="chapter-kicker">第一折 · 武陵溪</p>
+        <h2 id="chapter-title">缘溪行</h2>
+      </div>
+    </div>
+    <blockquote id="chapter-quote" class="chapter-quote"></blockquote>
+    <p id="chapter-note" class="chapter-note"></p>
+    <div class="chapter-foot">
+      <span id="chapter-place">武陵溪畔</span>
+      <button id="chapter-more" class="text-btn">史注 →</button>
+    </div>
+  </aside>
+
+  <section id="journal" class="journal" aria-label="游记与史注">
+    <div class="journal-inner">
+      <header class="journal-head">
+        <div>
+          <p class="eyebrow">桃花源記 · 行旅笔记</p>
+          <h2>桃源行記</h2>
+        </div>
+        <button id="journal-close" class="close-btn" aria-label="关闭游记">×</button>
+      </header>
+
+      <div class="journal-tabs" role="tablist">
+        <button id="tab-route" class="journal-tab active" role="tab" aria-selected="true">十二折 · 行记</button>
+        <button id="tab-notes" class="journal-tab" role="tab" aria-selected="false">史注 · 考据</button>
+      </div>
+
+      <div class="journal-body">
+        <div id="route-panel" class="journal-panel active">
+          <div class="route-intro">
+            <p>循原文的次序，从武陵溪到桃源村。点选任一折，可即刻前往。</p>
+          </div>
+          <ol id="chapter-list" class="chapter-list"></ol>
+        </div>
+        <div id="notes-panel" class="journal-panel">
+          <div id="notes-list" class="notes-list"></div>
+        </div>
+      </div>
+
+      <footer class="journal-foot">
+        <p>文本依陶渊明《桃花源记》通行本。场景为文学想象，非考古复原。</p>
+        <p>参考：逯钦立校注《陶渊明集》；《晋书·地理志》；孙机《汉代物质文化资料图说》。</p>
+      </footer>
+    </div>
+  </section>
+
+  <div id="hotspot-modal" class="hotspot-modal">
+    <div class="hotspot-card">
+      <button id="hotspot-close" class="close-btn" aria-label="关闭">×</button>
+      <p id="hotspot-tag" class="hotspot-tag">史注</p>
+      <h3 id="hotspot-title">桑竹之属</h3>
+      <div id="hotspot-body" class="hotspot-body"></div>
+      <p id="hotspot-source" class="hotspot-source"></p>
+    </div>
+  </div>
+
+  <div id="help-panel" class="help-panel">
+    <div class="help-card">
+      <button id="help-close" class="close-btn" aria-label="关闭">×</button>
+      <p class="eyebrow">游园须知</p>
+      <h3>怎样走这一趟</h3>
+      <dl>
+        <div><dt><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>在溪岸、桃林、山洞与村落间行走</dd></div>
+        <div><dt>鼠标</dt><dd>环顾四周；点击画面可锁定视角</dd></div>
+        <div><dt><kbd>Shift</kbd></dt><dd>按住疾行</dd></div>
+        <div><dt><kbd>E</kbd></dt><dd>察看近处的桑、田、井、酒瓮等细节</dd></div>
+        <div><dt><kbd>M</kbd></dt><dd>展开游记、回看原文与史注，或跳转章节</dd></div>
+        <div><dt><kbd>Esc</kbd></dt><dd>松开视角。再按「漫游」可重新进入</dd></div>
+      </dl>
+      <p class="help-note">山谷与洞口依原文布局，方位、尺度与器物细节作了文学化补充。若迷路，跟着水面与落花走，或打开游记跳转。</p>
+    </div>
+  </div>
+
+  <section id="ending" class="ending">
+    <div class="ending-inner">
+      <p class="eyebrow">尾声</p>
+      <h2>后遂无问津者</h2>
+      <blockquote>南阳刘子骥，高尚士也，闻之，欣然规往。<br />未果，寻病终。后遂无问津者。</blockquote>
+      <p class="ending-note">你已走完渔人当年的路。桃源是否仍在，取决于后来的人还愿不愿意寻找。</p>
+      <div class="ending-actions">
+        <button id="btn-return" class="ink-btn primary"><b>留在村中</b><span>继续自由漫游</span></button>
+        <button id="btn-restart" class="ink-btn"><b>再入桃源</b><span>回到溪口</span></button>
+      </div>
+    </div>
+  </section>
+
+  <div id="mobile-ui" class="mobile-ui">
+    <div id="joystick" class="joystick"><i></i></div>
+    <button id="btn-mobile-look" class="mobile-look">环顾</button>
+    <button id="btn-mobile-interact" class="mobile-interact">察看</button>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

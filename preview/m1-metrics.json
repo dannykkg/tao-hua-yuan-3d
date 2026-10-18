@@ -1,0 +1,16 @@
+{
+  "loadMs": 2797,
+  "desktop": {
+    "peach": 36.3,
+    "cave": 41.7,
+    "village": 52,
+    "pond": 60,
+    "start": 39.7
+  },
+  "mobile": {
+    "loadMs": 3165,
+    "peach": 60.3,
+    "errors": []
+  },
+  "errors": []
+}
