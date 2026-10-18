@@ -2,6 +2,10 @@
 
 一个以陶渊明《桃花源记》为叙事蓝本、用 **Three.js** 构建的第一人称可漫游三维场景。
 
+**在线体验：** https://dannykkg.github.io/tao-hua-yuan-3d/  
+**仓库：** https://github.com/dannykkg/tao-hua-yuan-3d  
+**M1 验收：** [M1_ACCEPTANCE.md](M1_ACCEPTANCE.md)
+
 从武陵溪出发，沿溪穿过桃花林，进入山腹石隙；再走出洞口，看到良田、美池、桑竹、屋舍与往来种作的村人。你可以自由行走，也可以交由自动导览，依次经过原文的十二折。场景中的建筑、农事、器物与服饰参考汉晋之间的物质文化作了合理想象；这些补充以及相关争论，都收在「史注」里。
 
 ![桃花林 · M1 写实化](preview/peach.png)
